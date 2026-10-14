@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>무료체험 성과 대시보드</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f4f6fa; --surface: #ffffff; --surface-2: #f7f9fc; --line: #e3e8f0; --grid: #edf0f5;
+  --ink: #14213d; --ink-2: #4a5568; --ink-3: #7b8597;
+  --brand: #1f3864; --brand-2: #2e5596;
+  --s-db: #2a78d6; --s-dir: #eb6834; --s-lead: #2a78d6; --target: #9aa3b2;
+  --chip-dir: #fdeee6; --chip-db: #e8f1fc; --accent: #2e5596;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #121316; --surface: #1a1a19; --surface-2: #222321; --line: #2f302d; --grid: #2a2b28;
+    --ink: #f0efec; --ink-2: #c3c2b7; --ink-3: #8f8e86;
+    --brand: #1b2a48; --brand-2: #2a3f68;
+    --s-db: #3987e5; --s-dir: #d95926; --s-lead: #3987e5; --target: #6f6e68;
+    --chip-dir: #3a2419; --chip-db: #1c2b40; --accent: #7fb2f0;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121316; --surface: #1a1a19; --surface-2: #222321; --line: #2f302d; --grid: #2a2b28;
+  --ink: #f0efec; --ink-2: #c3c2b7; --ink-3: #8f8e86;
+  --brand: #1b2a48; --brand-2: #2a3f68;
+  --s-db: #3987e5; --s-dir: #d95926; --s-lead: #3987e5; --target: #6f6e68;
+  --chip-dir: #3a2419; --chip-db: #1c2b40; --accent: #7fb2f0;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", system-ui, sans-serif;
+  font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.top { background: var(--brand); color: #fff; }
+.top .in { max-width: 1180px; margin: 0 auto; padding: 22px 16px 18px; }
+.top h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.meta { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: rgba(255,255,255,.78); }
+.meta b { color: #fff; font-weight: 600; }
+.theme-btn { float: right; background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.25);
+  border-radius: 8px; padding: 4px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+main { max-width: 1180px; margin: 0 auto; padding: 18px 16px 40px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.sec-title { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
+.sec-sub { font-size: 12px; color: var(--ink-3); margin: 0 0 12px; }
+
+/* 목표 히어로 */
+.hero { padding: 20px 22px; display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end; }
+.hero .label { font-size: 13px; color: var(--ink-2); font-weight: 600; }
+.hero .big { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.hero .big small { font-size: 18px; font-weight: 600; color: var(--ink-3); }
+.hero .rate { text-align: right; }
+.hero .rate .big { color: var(--accent); }
+.bar { grid-column: 1 / -1; height: 18px; background: var(--grid); border-radius: 9px; overflow: hidden; display: flex; gap: 2px; }
+.bar span { display: block; height: 100%; min-width: 0; }
+.bar .db { background: var(--s-db); }
+.bar .dir { background: var(--s-dir); }
+.hero-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--ink-2); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 5px; vertical-align: 0; }
+
+/* KPI */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 14px 0; }
+.kpi { padding: 14px 16px; }
+.kpi .k { font-size: 12.5px; color: var(--ink-2); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.kpi .v { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.kpi .v small { font-size: 14px; font-weight: 600; color: var(--ink-3); margin-left: 2px; }
+.kpi .d { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.kpi .d b { color: var(--ink-2); font-weight: 600; }
+.chip { font-size: 10.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+.chip.dir { background: var(--chip-dir); color: var(--s-dir); }
+.chip.db { background: var(--chip-db); color: var(--s-db); }
+
+/* 차트 */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.panel { padding: 16px 16px 10px; position: relative; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-2); margin: -4px 0 6px; }
+.chart { width: 100%; height: 230px; position: relative; }
+.chart svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.chart text { fill: var(--ink-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+.chart .gl { stroke: var(--grid); stroke-width: 1; }
+.chart .ax { stroke: var(--line); stroke-width: 1; }
+.chart .hit { fill: transparent; cursor: default; }
+.chart .hl { fill: var(--ink); opacity: .05; }
+.tip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 12px; min-width: 130px;
+  box-shadow: 0 6px 18px rgba(16,24,40,.12); display: none; white-space: nowrap; }
+.tip .t { font-weight: 700; margin-bottom: 4px; }
+.tip .r { display: flex; justify-content: space-between; gap: 14px; }
+.tip .r span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; float: right; margin-top: -2px; }
+.seg button { font: inherit; font-size: 12px; padding: 3px 10px; border: 0; background: var(--surface); color: var(--ink-2); cursor: pointer; }
+.seg button.on { background: var(--brand); color: #fff; }
+.full { margin-top: 12px; }
+
+/* 표 */
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+th { position: sticky; top: 0; background: var(--surface-2); color: var(--ink-2); font-weight: 600; text-align: right;
+  padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+tr.total td { font-weight: 700; background: var(--surface-2); border-top: 1px solid var(--line); }
+td.dir, th.dir { color: var(--s-dir); }
+.tbl-panel { padding: 16px; margin-top: 12px; }
+.defs { margin-top: 14px; padding: 14px 16px; font-size: 12px; color: var(--ink-2); }
+.defs dt { font-weight: 700; color: var(--ink); margin-top: 6px; }
+.defs dd { margin: 0; }
+.foot { font-size: 11.5px; color: var(--ink-3); margin-top: 12px; text-align: center; }
+
+@media (max-width: 860px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .grid2 { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr; }
+  .hero .rate { text-align: left; }
+  .hero .big { font-size: 32px; }
+}
+@media (max-width: 480px) {
+  .kpi { padding: 12px; }
+  .kpi .v { font-size: 24px; }
+  .kpi .chip { display: none; }
+  .top h1 { font-size: 19px; padding-right: 84px; }
+}
+@media print { .theme-btn, .seg { display: none; } body { background: #fff; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="화면 테마 전환">다크 모드</button>
+  <h1 id="title">무료체험 성과 대시보드</h1>
+  <div class="meta" id="meta"></div>
+</div></header>
+
+<main>
+  <section class="card hero" aria-label="주문 목표 달성 현황">
+    <div>
+      <div class="label">누적 유효 주문 (목표 대비)</div>
+      <div class="big" id="goalNum"></div>
+    </div>
+    <div class="rate">
+      <div class="label">목표 달성률</div>
+      <div class="big" id="goalRate"></div>
+    </div>
+    <div class="bar" id="goalBar" role="img"></div>
+    <div class="hero-foot" id="goalFoot"></div>
+  </section>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grid2">
+    <div class="card panel">
+      <h2 class="sec-title">일별 유효 DB</h2>
+      <p class="sec-sub">메타 잠재고객 신규 고객 수 (최초 신청일 기준)</p>
+      <div class="chart" id="chDb"></div>
+    </div>
+    <div class="card panel">
+      <h2 class="sec-title">일별 유효 주문</h2>
+      <p class="sec-sub">취소·환불 제외, 주문일 기준</p>
+      <div class="legend"><span><i class="dot" style="background:var(--s-db)"></i>DB 매칭 주문</span><span><i class="dot" style="background:var(--s-dir)"></i>직접 랜딩 주문</span></div>
+      <div class="chart" id="chOrd"></div>
+    </div>
+  </section>
+
+  <section class="card panel full">
+    <div class="seg" role="group" aria-label="세로축 범위">
+      <button type="button" data-scale="fit" class="on">실적 확대</button><button type="button" data-scale="goal">목표 포함</button>
+    </div>
+    <h2 class="sec-title">누적 유효 주문 추이</h2>
+    <p class="sec-sub">DB 매칭 + 직접 랜딩 누적 · 점선 = 목표</p>
+    <div class="legend"><span><i class="dot" style="background:var(--s-db)"></i>누적 DB 매칭</span><span><i class="dot" style="background:var(--s-dir)"></i>누적 직접 랜딩</span><span><i class="dot" style="background:var(--target)"></i>목표</span></div>
+    <div class="chart" id="chCum" style="height:260px"></div>
+  </section>
+
+  <section class="card tbl-panel">
+    <h2 class="sec-title">일별 실적</h2>
+    <p class="sec-sub">최신순 · 고객 수는 최초 발생일 기준(일별 합계 = 누적 고유 고객) · 전환율·비중·달성률은 누적</p>
+    <div class="tbl-wrap"><table id="tblDaily"></table></div>
+  </section>
+
+  <section class="card tbl-panel">
+    <h2 class="sec-title">신청일별 주문 전환 (코호트)</h2>
+    <p class="sec-sub">메타 최초 신청일 기준 · 신청 이후 언제 주문했든 신청일 행에 집계 · D+n = 신청 후 첫 주문까지 일수</p>
+    <div class="tbl-wrap"><table id="tblCohort"></table></div>
+  </section>
+
+  <section class="card defs">
+    <dl>
+      <dt>유효 주문</dt><dd>대상 상품 주문 중 취소·환불 제외 (목표 실적) = DB 매칭 주문 + 직접 랜딩 주문</dd>
+      <dt>DB 매칭 주문</dt><dd>메타 잠재고객 DB와 전화번호가 일치하고, 메타 신청 이후에 발생한 주문</dd>
+      <dt>직접 랜딩 주문</dt><dd>그 외 유효 주문 (메타 DB에 없는 번호 또는 메타 신청 이전 주문) — 전환캠페인 랜딩 직접 유입</dd>
+      <dt>DB → 주문 전환율</dt><dd>DB 매칭 주문 고객 ÷ 유효 DB 고객 (누적)</dd>
+    </dl>
+  </section>
+  <p class="foot" id="foot"></p>
+</main>
+
+<script>
+const DATA = {"title": "어린이과학동아 0원 무료체험 성과 대시보드", "generated_at": "2026-10-14 16:25", "period": "2026-10-13 ~ 2026-10-14", "product": "[1,000명 한정] 어린이과학동아 0원 무료체험", "kpi": {"target": 1000, "db_customers": 66, "valid_orders": 16, "db_orders": 15, "direct_orders": 1, "direct_customers": 1, "db_order_customers": 15, "cancelled": 1}, "daily": [{"date": "2026-10-13", "db": 19, "orders": 0, "db_orders": 0, "dir_orders": 0, "db_ocust": 0, "dir_ocust": 0, "cum_db": 19, "cum_orders": 0, "cum_db_orders": 0, "cum_dir_orders": 0, "cum_db_ocust": 0, "cum_dir_ocust": 0}, {"date": "2026-10-14", "db": 47, "orders": 16, "db_orders": 15, "dir_orders": 1, "db_ocust": 15, "dir_ocust": 1, "cum_db": 66, "cum_orders": 16, "cum_db_orders": 15, "cum_dir_orders": 1, "cum_db_ocust": 15, "cum_dir_ocust": 1}], "cohort": [{"date": "2026-10-13", "leads": 19, "orders": 2, "d0": 0, "d1": 2, "d2": 0, "d3_6": 0, "d7": 0}, {"date": "2026-10-14", "leads": 47, "orders": 13, "d0": 13, "d1": 0, "d2": 0, "d3_6": 0, "d7": 0}]};
+
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => (n == null || isNaN(n)) ? "-" : Math.round(n).toLocaleString("ko-KR");
+  const pct = (a, b) => b ? (a / b * 100).toFixed(1) + "%" : "-";
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const md = (s) => { const [y, m, d] = s.split("-"); return `${+m}/${+d}`; };
+  const wd = (s) => "일월화수목금토"[new Date(s + "T00:00:00").getDay()];
+
+  // ---- 테마 토글 ----
+  const root = document.documentElement, btn = $("themeBtn");
+  const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  try { const t = localStorage.getItem("fx-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  const syncBtn = () => { btn.textContent = isDark() ? "라이트 모드" : "다크 모드"; };
+  btn.onclick = () => { root.dataset.theme = isDark() ? "light" : "dark"; try { localStorage.setItem("fx-theme", root.dataset.theme); } catch (e) {} syncBtn(); drawAll(); };
+  syncBtn();
+
+  if (!DATA) { $("goalNum").textContent = "데이터 없음"; return; }
+  const D = DATA.daily, K = DATA.kpi;
+  $("title").textContent = DATA.title;
+  document.title = DATA.title;
+  $("meta").innerHTML = `<span>기준 <b>${DATA.generated_at}</b></span><span>데이터 기간 <b>${DATA.period}</b></span>` +
+    `<span>대상 상품 <b>${DATA.product}</b></span>`;
+  $("foot").textContent = `자동 생성 · ${DATA.generated_at} · 집계 수치만 게시 (개인정보 미포함)`;
+
+  // ---- 목표 ----
+  const tgt = K.target;
+  $("goalNum").innerHTML = `${fmt(K.valid_orders)}<small> / ${fmt(tgt)}건</small>`;
+  $("goalRate").textContent = pct(K.valid_orders, tgt);
+  const wDb = tgt ? Math.min(100, K.db_orders / tgt * 100) : 0, wDir = tgt ? Math.min(100 - wDb, K.direct_orders / tgt * 100) : 0;
+  $("goalBar").innerHTML = `<span class="db" style="width:${wDb}%"></span><span class="dir" style="width:${wDir}%"></span>`;
+  $("goalBar").setAttribute("aria-label", `목표 ${fmt(tgt)}건 중 DB 매칭 ${fmt(K.db_orders)}건, 직접 랜딩 ${fmt(K.direct_orders)}건`);
+  $("goalFoot").innerHTML =
+    `<span><i class="dot" style="background:var(--s-db)"></i>DB 매칭 <b>${fmt(K.db_orders)}</b>건</span>` +
+    `<span><i class="dot" style="background:var(--s-dir)"></i>직접 랜딩 <b>${fmt(K.direct_orders)}</b>건</span>` +
+    `<span>잔여 목표 <b>${fmt(Math.max(0, tgt - K.valid_orders))}</b>건</span>` +
+    `<span>취소·환불 제외 ${fmt(K.cancelled)}건</span>`;
+
+  // ---- KPI ----
+  const last = D.length ? D[D.length - 1] : null;
+  const delta = (key, unit) => last ? `<b>+${fmt(last[key])}${unit}</b> (${md(last.date)})` : "";
+  $("kpis").innerHTML = [
+    ["누적 유효 DB", fmt(K.db_customers), "명", delta("db", "명") + " · 중복·오류 제외", ""],
+    ["누적 주문 완료 고객", fmt(K.db_order_customers), "명", delta("db_ocust", "명") + " · DB 매칭", '<span class="chip db">DB</span>'],
+    ["DB → 주문 전환율", pct(K.db_order_customers, K.db_customers), "", "주문 완료 고객 ÷ 유효 DB", ""],
+    ["직접 랜딩 주문", fmt(K.direct_orders), "건", delta("dir_orders", "건") + ` · ${fmt(K.direct_customers)}명 · 비중 ${pct(K.direct_orders, K.valid_orders)}`, '<span class="chip dir">전환캠페인</span>'],
+  ].map(([k, v, u, d, chip]) => `<div class="card kpi"><div class="k">${k}${chip}</div><div class="v">${v}<small>${u}</small></div><div class="d">${d}</div></div>`).join("");
+
+  // ---- 표 ----
+  const rows = D.slice().reverse();
+  const tot = { db: 0, orders: 0, db_orders: 0, dir_orders: 0 };
+  D.forEach(r => { tot.db += r.db; tot.orders += r.orders; tot.db_orders += r.db_orders; tot.dir_orders += r.dir_orders; });
+  $("tblDaily").innerHTML =
+    `<thead><tr><th>일자</th><th>유효 DB</th><th>유효 주문</th><th>DB 매칭 주문</th><th class="dir">직접 랜딩 주문</th>` +
+    `<th>누적 유효 DB</th><th>누적 유효 주문</th><th>누적 주문 고객(DB)</th><th>DB→주문 전환율</th><th class="dir">직접 랜딩 비중</th><th>목표 달성률</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td>${md(r.date)} (${wd(r.date)})</td><td>${fmt(r.db)}</td><td><b>${fmt(r.orders)}</b></td><td>${fmt(r.db_orders)}</td>` +
+      `<td class="dir">${fmt(r.dir_orders)}</td><td>${fmt(r.cum_db)}</td><td>${fmt(r.cum_orders)}</td><td>${fmt(r.cum_db_ocust)}</td>` +
+      `<td>${pct(r.cum_db_ocust, r.cum_db)}</td><td class="dir">${pct(r.cum_dir_orders, r.cum_orders)}</td><td>${pct(r.cum_orders, tgt)}</td></tr>`).join("") +
+    `<tr class="total"><td>합계</td><td>${fmt(tot.db)}</td><td>${fmt(tot.orders)}</td><td>${fmt(tot.db_orders)}</td><td class="dir">${fmt(tot.dir_orders)}</td>` +
+    `<td>${fmt(K.db_customers)}</td><td>${fmt(K.valid_orders)}</td><td>${fmt(K.db_order_customers)}</td><td>${pct(K.db_order_customers, K.db_customers)}</td>` +
+    `<td class="dir">${pct(K.direct_orders, K.valid_orders)}</td><td>${pct(K.valid_orders, tgt)}</td></tr></tbody>`;
+  const C = DATA.cohort;
+  const ct = C.reduce((a, r) => { ["leads", "orders", "d0", "d1", "d2", "d3_6", "d7"].forEach(k => a[k] = (a[k] || 0) + r[k]); return a; }, {});
+  $("tblCohort").innerHTML = C.length ?
+    `<thead><tr><th>신청일</th><th>신청 고객</th><th>주문 완료 고객</th><th>전환율</th><th>D+0</th><th>D+1</th><th>D+2</th><th>D+3~6</th><th>D+7 이상</th></tr></thead><tbody>` +
+    C.slice().reverse().map(r => `<tr><td>${md(r.date)} (${wd(r.date)})</td><td>${fmt(r.leads)}</td><td><b>${fmt(r.orders)}</b></td><td>${pct(r.orders, r.leads)}</td>` +
+      `<td>${fmt(r.d0)}</td><td>${fmt(r.d1)}</td><td>${fmt(r.d2)}</td><td>${fmt(r.d3_6)}</td><td>${fmt(r.d7)}</td></tr>`).join("") +
+    `<tr class="total"><td>합계</td><td>${fmt(ct.leads)}</td><td>${fmt(ct.orders)}</td><td>${pct(ct.orders, ct.leads)}</td><td>${fmt(ct.d0)}</td>` +
+    `<td>${fmt(ct.d1)}</td><td>${fmt(ct.d2)}</td><td>${fmt(ct.d3_6)}</td><td>${fmt(ct.d7)}</td></tr></tbody>` : "<tr><td>META 데이터 미등록</td></tr>";
+
+  // ---- 차트 공통 ----
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+  // 깔끔한 눈금: 간격 = 1·2·5×10^k, 최대값 = 간격의 배수
+  function niceScale(v) {
+    v = Math.max(v, 4);
+    const raw = v / 4, p = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 5, 10].map(m => m * p).find(s => s >= raw);
+    return { max: Math.ceil(v / step) * step, step };
+  }
+  function frame(box) {
+    box.innerHTML = "";
+    const W = box.clientWidth, H = box.clientHeight, m = { l: 40, r: 8, t: 10, b: 24 };
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" }, box);
+    const tip = document.createElement("div"); tip.className = "tip"; box.appendChild(tip);
+    return { svg, tip, W, H, m, iw: W - m.l - m.r, ih: H - m.t - m.b };
+  }
+  function yAxis(f, sc) {
+    const n = Math.round(sc.max / sc.step);
+    for (let i = 0; i <= n; i++) {
+      const v = sc.step * i, y = f.m.t + f.ih - f.ih * v / sc.max;
+      el("line", { x1: f.m.l, x2: f.W - f.m.r, y1: y, y2: y, class: i ? "gl" : "ax" }, f.svg);
+      el("text", { x: f.m.l - 6, y: y + 4, "text-anchor": "end" }, f.svg).textContent = fmt(v);
+    }
+  }
+  function xLabels(f, n, xAt) {
+    const step = Math.max(1, Math.ceil(n / Math.max(1, Math.floor(f.iw / 46))));
+    D.forEach((r, i) => { if (i % step === 0 || i === n - 1) el("text", { x: xAt(i), y: f.H - 6, "text-anchor": "middle" }, f.svg).textContent = md(r.date); });
+  }
+  function showTip(f, html, x, y) {
+    f.tip.innerHTML = html; f.tip.style.display = "block";
+    const tw = f.tip.offsetWidth; let left = x + 12; if (left + tw > f.W) left = x - tw - 12;
+    f.tip.style.left = Math.max(0, left) + "px"; f.tip.style.top = Math.max(0, y - 10) + "px";
+  }
+  const tipRows = (title, items) => `<div class="t">${title}</div>` + items.map(([c, k, v]) =>
+    `<div class="r"><span>${c ? `<i class="dot" style="background:${c}"></i>` : ""}${k}</span><span>${v}</span></div>`).join("");
+
+  function bars(box, series, title) {
+    const f = frame(box); if (!D.length) return;
+    const n = D.length, sc = niceScale(Math.max(...D.map(r => series.reduce((s, sr) => s + r[sr.key], 0)))), max = sc.max;
+    yAxis(f, sc);
+    const band = f.iw / n, bw = Math.max(3, Math.min(34, band * 0.62));
+    const xAt = (i) => f.m.l + band * i + band / 2;
+    const y = (v) => f.m.t + f.ih - f.ih * v / max;
+    const hl = el("rect", { class: "hl", y: f.m.t, height: f.ih, width: band, x: 0, visibility: "hidden" }, f.svg);
+    D.forEach((r, i) => {
+      let acc = 0;
+      const vis = series.filter(sr => r[sr.key] > 0);
+      vis.forEach((sr, j) => {
+        const v = r[sr.key], y0 = y(acc), y1 = y(acc + v), top = j === vis.length - 1;
+        const h = Math.max(0, y0 - y1 - (j > 0 ? 2 : 0)), x = xAt(i) - bw / 2, rr = top ? Math.min(4, bw / 2, h) : 0;
+        const yy = y1;
+        el("path", { fill: css(sr.color), d: `M${x},${yy + h} V${yy + rr} Q${x},${yy} ${x + rr},${yy} H${x + bw - rr} Q${x + bw},${yy} ${x + bw},${yy + rr} V${yy + h} Z` }, f.svg);
+        acc += v;
+      });
+      const hit = el("rect", { class: "hit", x: f.m.l + band * i, y: f.m.t, width: band, height: f.ih }, f.svg);
+      hit.addEventListener("mousemove", (e) => {
+        hl.setAttribute("x", f.m.l + band * i); hl.setAttribute("visibility", "visible");
+        const items = series.map(sr => [css(sr.color), sr.name, fmt(r[sr.key])]);
+        if (series.length > 1) items.push(["", "합계", fmt(series.reduce((s, sr) => s + r[sr.key], 0))]);
+        const b = box.getBoundingClientRect(); showTip(f, tipRows(`${md(r.date)} (${wd(r.date)})`, items), e.clientX - b.left, e.clientY - b.top);
+      });
+      hit.addEventListener("mouseleave", () => { f.tip.style.display = "none"; hl.setAttribute("visibility", "hidden"); });
+    });
+    xLabels(f, n, xAt);
+    f.svg.setAttribute("aria-label", title);
+  }
+
+  let cumScale = "fit";
+  function cumulative(box) {
+    const f = frame(box); if (!D.length) return;
+    const n = D.length, tgt = K.target;
+    const dataMax = Math.max(1, ...D.map(r => r.cum_orders));
+    const sc = niceScale(cumScale === "goal" ? Math.max(tgt, dataMax) : dataMax * 1.15), max = sc.max;
+    yAxis(f, sc);
+    const xAt = (i) => n === 1 ? f.m.l + f.iw / 2 : f.m.l + f.iw * i / (n - 1);
+    const y = (v) => f.m.t + f.ih - f.ih * Math.min(v, max) / max;
+    const area = (lo, hi, color) => {
+      let d = D.map((r, i) => `${i ? "L" : "M"}${xAt(i)},${y(hi(r))}`).join(" ");
+      d += " " + D.slice().reverse().map((r, k) => `L${xAt(n - 1 - k)},${y(lo(r))}`).join(" ") + " Z";
+      el("path", { d, fill: css(color), "fill-opacity": 0.85 }, f.svg);
+    };
+    if (n > 1) {
+      area(() => 0, r => r.cum_db_orders, "--s-db");
+      area(r => r.cum_db_orders, r => r.cum_orders, "--s-dir");
+    }
+    el("path", { d: D.map((r, i) => `${i ? "L" : "M"}${xAt(i)},${y(r.cum_orders)}`).join(" "), fill: "none", stroke: css("--ink"), "stroke-width": 2 }, f.svg);
+    D.forEach((r, i) => el("circle", { cx: xAt(i), cy: y(r.cum_orders), r: 4, fill: css("--ink"), stroke: css("--surface"), "stroke-width": 2 }, f.svg));
+    if (tgt <= max) {
+      const ty = y(tgt);
+      el("line", { x1: f.m.l, x2: f.W - f.m.r, y1: ty, y2: ty, stroke: css("--target"), "stroke-width": 2, "stroke-dasharray": "6 5" }, f.svg);
+      el("text", { x: f.W - f.m.r, y: ty - 6, "text-anchor": "end" }, f.svg).textContent = `목표 ${fmt(tgt)}건`;
+    } else {
+      el("text", { x: f.W - f.m.r, y: f.m.t + 4, "text-anchor": "end" }, f.svg).textContent = `목표 ${fmt(tgt)}건 ↑ ('목표 포함'으로 보기)`;
+    }
+    const lastI = n - 1;
+    el("text", { x: xAt(lastI) - 6, y: y(D[lastI].cum_orders) - 9, "text-anchor": "end", style: `fill:${css("--ink")};font-weight:700` }, f.svg).textContent = `${fmt(D[lastI].cum_orders)}건`;
+    const cross = el("line", { y1: f.m.t, y2: f.m.t + f.ih, stroke: css("--ink-3"), "stroke-width": 1, x1: 0, x2: 0, visibility: "hidden" }, f.svg);
+    const hit = el("rect", { class: "hit", x: f.m.l - 10, y: f.m.t, width: f.iw + 20, height: f.ih }, f.svg);
+    hit.addEventListener("mousemove", (e) => {
+      const b = box.getBoundingClientRect(), px = e.clientX - b.left;
+      const i = n === 1 ? 0 : Math.max(0, Math.min(n - 1, Math.round((px - f.m.l) / (f.iw / (n - 1)))));
+      const r = D[i]; cross.setAttribute("x1", xAt(i)); cross.setAttribute("x2", xAt(i)); cross.setAttribute("visibility", "visible");
+      showTip(f, tipRows(`${md(r.date)} 누적`, [[css("--s-db"), "DB 매칭", fmt(r.cum_db_orders)], [css("--s-dir"), "직접 랜딩", fmt(r.cum_dir_orders)],
+        ["", "합계", fmt(r.cum_orders)], ["", "달성률", pct(r.cum_orders, tgt)]]), xAt(i), e.clientY - b.top);
+    });
+    hit.addEventListener("mouseleave", () => { f.tip.style.display = "none"; cross.setAttribute("visibility", "hidden"); });
+    xLabels(f, n, xAt);
+    f.svg.setAttribute("aria-label", "누적 유효 주문 추이");
+  }
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => {
+    cumScale = b.dataset.scale; document.querySelectorAll(".seg button").forEach(x => x.classList.toggle("on", x === b)); cumulative($("chCum"));
+  });
+
+  function drawAll() {
+    bars($("chDb"), [{ key: "db", name: "유효 DB", color: "--s-lead" }], "일별 유효 DB");
+    bars($("chOrd"), [{ key: "db_orders", name: "DB 매칭", color: "--s-db" }, { key: "dir_orders", name: "직접 랜딩", color: "--s-dir" }], "일별 유효 주문");
+    cumulative($("chCum"));
+  }
+  drawAll();
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(drawAll, 120); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { syncBtn(); drawAll(); });
+})();
+</script>
+</body>
+</html>
